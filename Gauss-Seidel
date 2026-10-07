@@ -1,0 +1,37 @@
+ef gauss_seidel(A, b, imax=100, tol=1e-6):
+    n = len(b)
+    x = [0.0] * n
+
+    for itr in range(1, imax + 1):
+        old = x[:]
+
+        for i in range(n):
+            total = b[i]
+
+            for j in range(n):
+                if i != j:
+                    total -= A[i][j] * x[j]
+
+            x[i] = total / A[i][i]
+
+        error = max(abs(x[i] - old[i]) for i in range(n))
+
+        if error < tol:
+            return x, itr
+
+    return x, imax
+
+
+A = [
+    [10, -2, 1],
+    [-1, 11, -2],
+    [2, -1, 10]
+]
+b = [9, 15, 30]
+
+x, iterations = gauss_seidel(A, b, imax=100, tol=1e-6)
+
+print("Gauss-Seidel Iteration")
+print("Iterations :", iterations)
+for i, val in enumerate(x):
+    print(f"x[{i+1}] = {val:.8f}")
